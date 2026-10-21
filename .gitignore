@@ -1,0 +1,6 @@
+/.bundle/
+/vendor/
+/build/
+/pkg/
+/.omo/
+*.gem

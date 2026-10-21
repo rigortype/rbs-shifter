@@ -1,0 +1,371 @@
+{
+  "format": 1,
+  "source_rbs": "4.2.0",
+  "source_ruby": "4.0.7",
+  "targets": {
+    "3.3": {
+      "ruby_version": "3.3.12",
+      "maintenance": "security"
+    },
+    "3.4": {
+      "ruby_version": "3.4.11",
+      "maintenance": "normal"
+    }
+  },
+  "unresolved": [
+    "The initial rules cover selected documented API differences only; the full Source RBS 4.2.0 core audit against each exact Target Ruby is incomplete.",
+    "Set and Pathname promotion to core, their cross-references, and earlier stdlib availability require review before publication.",
+    "Ractor redesign, Fiber scheduler hooks, Range semantics, RubyVM APIs, and other unreviewed Ruby 3.4/4.0 differences require target-specific rules or evidence that no shift is needed.",
+    "Time xmlschema and iso8601 core versus stdlib availability has not been independently validated for each target.",
+    "Actual CRuby 3.3.12 and 3.4.11 runtime validation and Rigor integration on the supported platform remain outstanding."
+  ],
+  "rules": [
+    {
+      "id": "array.rfind.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "array.rbs",
+      "declaration": "::Array",
+      "action": "remove_member",
+      "before": "def rfind: () { (E) -> boolish } -> E?\n         | () -> Enumerator[E, E?]\n         | [T] (Enumerable::_NotFound[T]? ifnone) { (E) -> boolish } -> (E | T)\n         | [T] (Enumerable::_NotFound[T]? ifnone) -> Enumerator[E, E | T]\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/array.rbs"
+      ]
+    },
+    {
+      "id": "array.find.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "array.rbs",
+      "declaration": "::Array",
+      "action": "remove_member",
+      "before": "def find: () { (E) -> boolish } -> E?\n        | () -> Enumerator[E, E?]\n        | [T] (Enumerable::_NotFound[T]? ifnone) { (E) -> boolish } -> (E | T)\n        | [T] (Enumerable::_NotFound[T]? ifnone) -> Enumerator[E, E | T]\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/array.rbs"
+      ]
+    },
+    {
+      "id": "math.expm1.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "math.rbs",
+      "declaration": "::Math",
+      "action": "remove_member",
+      "before": "def self.expm1: (double x) -> Float\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/math.rbs"
+      ]
+    },
+    {
+      "id": "math.log1p.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "math.rbs",
+      "declaration": "::Math",
+      "action": "remove_member",
+      "before": "def self.log1p: (double x) -> Float\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/math.rbs"
+      ]
+    },
+    {
+      "id": "string.strip.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "replace_member",
+      "before": "def strip: (*selector) -> String\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ],
+      "after": "def strip: () -> String\n"
+    },
+    {
+      "id": "string.strip_.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "replace_member",
+      "before": "def strip!: (*selector) -> self?\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ],
+      "after": "def strip!: () -> self?\n"
+    },
+    {
+      "id": "string.lstrip.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "replace_member",
+      "before": "def lstrip: (*selector) -> String\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ],
+      "after": "def lstrip: () -> String\n"
+    },
+    {
+      "id": "string.lstrip_.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "replace_member",
+      "before": "def lstrip!: (*selector) -> self?\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ],
+      "after": "def lstrip!: () -> self?\n"
+    },
+    {
+      "id": "string.rstrip.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "replace_member",
+      "before": "def rstrip: (*selector) -> String\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ],
+      "after": "def rstrip: () -> String\n"
+    },
+    {
+      "id": "string.rstrip_.before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "replace_member",
+      "before": "def rstrip!: (*selector) -> self?\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ],
+      "after": "def rstrip!: () -> self?\n"
+    },
+    {
+      "id": "array.fetch_values.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "array.rbs",
+      "declaration": "::Array",
+      "action": "remove_member",
+      "before": "def fetch_values: (*int indexes) -> Array[E]\n                | [I < _ToInt, T] (*I indexes) { (I index) -> T } -> Array[E | T]\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/array.rbs"
+      ]
+    },
+    {
+      "id": "string.append_as_bytes.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "string.rbs",
+      "declaration": "::String",
+      "action": "remove_member",
+      "before": "def append_as_bytes: (*String | Integer) -> String\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/string.rbs"
+      ]
+    },
+    {
+      "id": "match_data.bytebegin.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "match_data.rbs",
+      "declaration": "::MatchData",
+      "action": "remove_member",
+      "before": "def bytebegin: (capture backref) -> Integer?\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/match_data.rbs"
+      ]
+    },
+    {
+      "id": "match_data.byteend.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "match_data.rbs",
+      "declaration": "::MatchData",
+      "action": "remove_member",
+      "before": "def byteend: (capture backref) -> Integer?\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/match_data.rbs"
+      ]
+    },
+    {
+      "id": "gc.config.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "gc.rbs",
+      "declaration": "::GC",
+      "action": "remove_member",
+      "before": "def self.config: () -> Hash[Symbol, untyped]\n               | (Hash[Symbol, untyped]) -> Hash[Symbol, untyped]\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/gc.rbs"
+      ]
+    },
+    {
+      "id": "warning.categories.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "warning.rbs",
+      "declaration": "::Warning",
+      "action": "remove_member",
+      "before": "def self.categories: () -> Array[Symbol]\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/warning.rbs"
+      ]
+    },
+    {
+      "id": "hash.initialize.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "hash.rbs",
+      "declaration": "::Hash",
+      "action": "replace_member",
+      "before": "def initialize: (?V default_value, ?capacity: int) -> void\n              | (?capacity: int) { (instance hash, _Key key) -> V } -> void\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/hash.rbs"
+      ],
+      "after": "def initialize: (?V default_value) -> void\n              | () { (instance hash, _Key key) -> V } -> void\n"
+    },
+    {
+      "id": "exception.set_backtrace.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "exception.rbs",
+      "declaration": "::Exception",
+      "action": "replace_member",
+      "before": "def set_backtrace: (String | Array[String]) -> Array[String]\n                 | (Array[Thread::Backtrace::Location]) -> Array[Thread::Backtrace::Location]\n                 | (nil) -> nil\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/exception.rbs"
+      ],
+      "after": "def set_backtrace: (String | Array[String]) -> Array[String]\n                 | (nil) -> nil\n"
+    },
+    {
+      "id": "fiber.raise.cause_before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "fiber.rbs",
+      "declaration": "::Fiber",
+      "action": "replace_member",
+      "before": "def raise: (?string msg, ?cause: Exception?) -> untyped\n         | (_Exception, ?string msg, ?Array[string] | Array[Thread::Backtrace::Location] | nil backtrace, ?cause: Exception?) -> untyped\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/fiber.rbs"
+      ],
+      "after": "def raise: (?string msg) -> untyped\n         | (_Exception, ?string msg, ?Array[string] | Array[Thread::Backtrace::Location] | nil backtrace) -> untyped\n"
+    },
+    {
+      "id": "fiber.raise.backtrace_before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "fiber.rbs",
+      "declaration": "::Fiber",
+      "action": "replace_member",
+      "before": "def raise: (?string msg) -> untyped\n         | (_Exception, ?string msg, ?Array[string] | Array[Thread::Backtrace::Location] | nil backtrace) -> untyped\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/fiber.rbs"
+      ],
+      "after": "def raise: (?string msg) -> untyped\n         | (_Exception, ?string msg, ?Array[string] | nil backtrace) -> untyped\n"
+    },
+    {
+      "id": "thread.raise.cause_before_4.0",
+      "targets": [
+        "3.3",
+        "3.4"
+      ],
+      "file": "thread.rbs",
+      "declaration": "::Thread",
+      "action": "replace_member",
+      "before": "def raise: (?String message, ?cause: Exception?) -> nil\n         | (_Exception, ?_ToS message, ?Array[Thread::Backtrace::Location] | Array[String] | nil backtrace, ?cause: Exception?) -> nil\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/4.0/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/thread.rbs"
+      ],
+      "after": "def raise: (?String message) -> nil\n         | (_Exception, ?_ToS message, ?Array[Thread::Backtrace::Location] | Array[String] | nil backtrace) -> nil\n"
+    },
+    {
+      "id": "thread.raise.backtrace_before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "thread.rbs",
+      "declaration": "::Thread",
+      "action": "replace_member",
+      "before": "def raise: (?String message) -> nil\n         | (_Exception, ?_ToS message, ?Array[Thread::Backtrace::Location] | Array[String] | nil backtrace) -> nil\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/thread.rbs"
+      ],
+      "after": "def raise: (?String message) -> nil\n         | (_Exception, ?_ToS message, ?Array[String] | nil backtrace) -> nil\n"
+    },
+    {
+      "id": "kernel.fail.before_3.4",
+      "targets": [
+        "3.3"
+      ],
+      "file": "kernel.rbs",
+      "declaration": "::Kernel",
+      "action": "replace_member",
+      "before": "def self?.fail: () -> bot\n              | (string message, ?cause: Exception?) -> bot\n              | (_Exception exception, ?string | _ToS message, ?String | Array[String] | Array[Thread::Backtrace::Location] | nil backtrace, ?cause: Exception?) -> bot\n              | (_Exception exception, ?cause: Exception?, **untyped) -> bot\n",
+      "evidence": [
+        "https://docs.ruby-lang.org/en/3.4/NEWS_md.html",
+        "https://github.com/ruby/rbs/blob/8aee3b6fa6231dbd6fefe01f2ba20e3104228a6f/core/kernel.rbs"
+      ],
+      "after": "def self?.fail: () -> bot\n              | (string message, ?cause: Exception?) -> bot\n              | (_Exception exception, ?string | _ToS message, ?String | Array[String] | nil backtrace, ?cause: Exception?) -> bot\n              | (_Exception exception, ?cause: Exception?, **untyped) -> bot\n"
+    }
+  ]
+}

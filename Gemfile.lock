@@ -1,0 +1,39 @@
+PATH
+  remote: .
+  specs:
+    rbs-shifter (0.1.0.pre.1)
+      rbs (= 4.2.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    logger (1.7.0)
+    minitest (5.27.0)
+    prism (1.9.0)
+    rake (13.4.2)
+    rbs (4.2.0)
+      logger
+      prism (>= 1.6.0)
+      tsort
+    tsort (0.2.0)
+
+PLATFORMS
+  arm64-darwin-25
+  ruby
+
+DEPENDENCIES
+  minitest (~> 5.27)
+  rake (~> 13.4)
+  rbs-shifter!
+
+CHECKSUMS
+  logger (1.7.0)
+  minitest (5.27.0)
+  prism (1.9.0)
+  rake (13.4.2)
+  rbs (4.2.0)
+  rbs-shifter (0.1.0.pre.1)
+  tsort (0.2.0)
+
+BUNDLED WITH
+  4.0.16

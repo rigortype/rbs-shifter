@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ruby: '3.3.12'
+            target: '3.3'
+          - ruby: '3.4.11'
+            target: '3.4'
+          - ruby: '4.0.7'
+            target: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bundle exec rake test
+      - run: bundle exec rake generate
+      - run: bundle exec ruby exe/rbs-shifter validate --root build/data
+      - if: matrix.target != ''
+        env:
+          TARGET_BRANCH: ${{ matrix.target }}
+        run: bundle exec ruby script/check-runtime.rb build/data "$TARGET_BRANCH"
+      - run: bundle exec rake build

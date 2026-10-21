@@ -1,0 +1,6 @@
+require "minitest/autorun"
+require "tmpdir"
+require "fileutils"
+require "json"
+require "digest"
+require_relative "../lib/rbs/shifter"
