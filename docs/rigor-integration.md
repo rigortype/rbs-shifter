@@ -10,7 +10,7 @@ catalog.targets # Available branches, sorted
 core = catalog.core_root(target: "3.3") # Pathname
 metadata = catalog.metadata(target: "3.3") # Frozen target metadata
 options = catalog.rigor_options(target: "3.3")
-# => { core_root: core, target_ruby: "3.3.11" }
+# => { core_root: core, target_ruby: "3.3.12" }
 ```
 
 The example version must be replaced by the package's recorded Target Ruby. A missing branch fails; the catalog never guesses a branch from the running Ruby and never downloads signatures.

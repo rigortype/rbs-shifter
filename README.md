@@ -88,6 +88,19 @@ core is insufficient. `rigor-options` describes the proposed arguments and
 requires the exact target CRuby on Linux x86_64; it does not call Rigor or claim
 that an unmodified Rigor supports them.
 
+## Detect upstream updates
+
+```sh
+bundle exec ruby script/check-updates.rb
+```
+
+This read-only check uses RubyGems metadata and the Ruby website's release and
+branch data. It reports stable RBS updates, Ruby patch updates, new targets,
+maintenance changes, and targets that have reached EOL. Exit status is 0 when
+the configuration matches, 2 when changes need review, and 1 for a fetch or data
+error. The weekly GitHub Actions job runs the same check. It never edits rules,
+creates issues, or publishes artifacts.
+
 ## Publication check
 
 ```sh
