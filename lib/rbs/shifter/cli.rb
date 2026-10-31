@@ -22,7 +22,7 @@ module RBS
           --version    Show the version
 
         Targets are explicit Ruby branches, such as 3.3.
-        rigor-options emits options for the proposed Rigor integration.
+        rigor-options emits Rigor's core_root and target_ruby values for a branch.
       TEXT
 
       def initialize(stdout: $stdout, stderr: $stderr)

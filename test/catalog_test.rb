@@ -143,24 +143,24 @@ class CatalogTest < Minitest::Test
     assert_raises(RBS::Shifter::Error) { catalog }
   end
 
-  def test_proposed_rigor_options_require_exact_supported_runtime
-    with_runtime("ruby", "3.3.11", "x86_64-linux") do
-      assert_equal({ core_root: @core, target_ruby: "3.3.11" }, catalog.rigor_options(target: "3.3"))
-    end
+  # Rigor runs on Ruby 4.0 and analyses an older target (ADR-27), so the options must not depend on the
+  # analyzer's runtime.
+  def test_rigor_options_do_not_depend_on_the_analyzer_runtime
     [
-      ["ruby", "3.3.10", "x86_64-linux"],
-      ["jruby", "3.3.11", "x86_64-linux"],
-      ["ruby", "3.3.11", "arm64-darwin25"],
-      ["ruby", "3.3.11", "aarch64-linux"],
-      ["ruby", "3.3.11", "x86_64-darwin25"]
+      ["ruby", "3.3.11", "x86_64-linux"],
+      ["ruby", "4.0.5", "x86_64-linux"],
+      ["ruby", "4.0.5", "arm64-darwin25"],
+      ["jruby", "3.3.11", "x86_64-linux"]
     ].each do |runtime|
       with_runtime(*runtime) do
-        assert_equal @core, catalog.core_root(target: "3.3")
-        assert_raises(RBS::Shifter::Error) { catalog.rigor_options(target: "3.3") }
+        assert_equal({ core_root: @core, target_ruby: "3.3.11" }, catalog.rigor_options(target: "3.3"))
       end
     end
   end
 
+  def test_rigor_options_refuse_an_unpackaged_target
+    assert_raises(RBS::Shifter::Error) { catalog.rigor_options(target: "3.2") }
+  end
   private
 
   def catalog

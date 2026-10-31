@@ -1,6 +1,6 @@
-# Proposed Rigor adapter contract
+# Rigor integration
 
-This is a **proposed contract**, not an existing Rigor API or a verified Rigor integration. ADR-20 records that inspected Rigor 0.4.2 does not expose the required core-directory replacement. Consumer changes and integration validation remain required.
+Rigor replaces its default core signatures with a directory named by the `core_root:` key in `.rigor.yml` (ADR-20). The key is on Rigor's `master` (rigortype/rigor#2518) and not yet in a released Rigor. Rigor runs on its own supported Ruby, 4.0, and analyses an older target from there (ADR-27).
 
 An explicit branch selects the exact Target Ruby recorded in the packaged manifest:
 
@@ -17,8 +17,13 @@ The example version must be replaced by the package's recorded Target Ruby. A mi
 
 `core_root` validates the manifest format, Source RBS version against the loaded `RBS::VERSION`, target metadata, root confinement including symlinks, the exact recursive `.rbs` file set, and every recorded SHA-256 checksum. Invalid or incomplete packages raise `RBS::Shifter::Error`. Returned metadata is immutable. A package must remain unchanged while the consumer loads it.
 
-`rigor_options` additionally requires CRuby running on the exact recorded Target Ruby on Linux x86_64. Other runtimes and platforms fail explicitly. Plain `core_root` selection has no runtime or platform restriction, allowing inspection and development on other hosts; this does not extend the integration guarantee.
+`rigor_options` returns the same selection with the recorded Target Ruby, whatever Ruby or platform runs it. Write both values into `.rigor.yml`:
 
-The proposed consumer adapter must pass `core_root` into its RBS environment-loader construction so the selected directory fully replaces the default RBS core. It must retain the recorded `target_ruby` as the analysis target, use Source RBS, and propagate selection failures. Adding the selected directory alongside default core definitions is not replacement. Runtime monkey patches are not part of this contract.
+```yaml
+target_ruby: "3.3.12"
+core_root: /path/printed/by/rbs-shifter/path
+```
 
-Before claiming Rigor support, validate this consumer change on every packaged Target Ruby under Linux x86_64, including an assertion that default core definitions are absent and shifted signatures are actually used. Catalog unit tests verify selection and refusal behavior only; they do not establish full Rigor analysis compatibility.
+`rbs-shifter path --target 3.3` prints the directory after validating it. Rigor itself reads the directory without the catalog's checksum validation, so select it through `path` or `rigor-options` rather than by hand. The path points into the installed gem and changes with the gem version and Ruby installation. The directory must not be inside the project's signature paths; Rigor rejects an overlap.
+
+Before claiming Rigor support, validate the integration on every packaged Target Ruby, including an assertion that default core definitions are absent and shifted signatures are actually used. Catalog unit tests verify selection and refusal behavior only; they do not establish full Rigor analysis compatibility. The guarantee covers core signature selection; ADR-27 lists the Rigor-side gaps outside it.

@@ -80,13 +80,13 @@ file set and SHA-256 digests. It never selects a target from the host Ruby or
 falls back to another branch. Standard library signature version compatibility
 is outside the initial core guarantee.
 
-## Proposed Rigor integration
+## Rigor integration
 
-See [the proposed contract](docs/rigor-integration.md). Rigor needs an explicit
-core-directory replacement interface. Adding signatures alongside its default
-core is insufficient. `rigor-options` describes the proposed arguments and
-requires the exact target CRuby on Linux x86_64; it does not call Rigor or claim
-that an unmodified Rigor supports them.
+See [the integration contract](docs/rigor-integration.md). Rigor replaces its
+default core with the directory named by `core_root:` in `.rigor.yml`; the key is
+on Rigor's `master` and not yet released. Rigor runs on Ruby 4.0 and analyses an
+older target from there. `rigor-options` prints the `core_root` and `target_ruby`
+values for a branch on any Ruby; it does not call Rigor.
 
 ## Detect upstream updates
 
