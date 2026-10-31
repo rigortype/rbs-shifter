@@ -69,11 +69,7 @@ module RBS
 
       def rigor_options(target:)
         core = core_root(target: target)
-        version = @manifest.fetch("targets").fetch(target).fetch("ruby_version")
-        unless RUBY_ENGINE == "ruby" && RUBY_VERSION == version && /\Ax86_64-linux(?:-|\z)/.match?(RUBY_PLATFORM)
-          raise Error, "Proposed Rigor integration requires CRuby #{version} on Linux x86_64"
-        end
-        { core_root: core, target_ruby: version }
+        { core_root: core, target_ruby: @manifest.fetch("targets").fetch(target).fetch("ruby_version") }
       end
 
       private

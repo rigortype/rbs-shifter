@@ -12,8 +12,8 @@ Checked on 2026-10-21.
 - The candidate gem contains both generated cores and upstream license notices.
 - Explicit selection checks the exact RBS version, file set, checksums, and path
   confinement. Unsupported targets fail rather than selecting a fallback.
-- The proposed Rigor adapter exposes full-core replacement options and enforces
-  the recorded target CRuby and Linux x86_64 platform.
+- The Rigor adapter exposes full-core replacement options with the recorded
+  Target Ruby, independent of the Ruby that runs Rigor (ADR-27).
 - Publication checks reject unresolved coverage and incomplete human-reviewed
   runtime or consumer evidence.
 - A read-only updater detects changes to stable RBS, target Ruby patches, and
@@ -50,10 +50,11 @@ Fiber scheduler hooks, Range and RubyVM differences, and Time core versus stdlib
 availability. Add evidence-backed rules and regression tests for every required
 correction, including restored APIs and changed inheritance where needed.
 
-Implement the proposed core-directory replacement interface in Rigor and verify
-positive and negative type-checking examples on every exact supported target.
-The Rigor repository has not been modified, and no existing Rigor API is claimed
-to support the proposal.
+Rigor's `core_root:` key replaces the default core and is on Rigor's `master`
+(rigortype/rigor#2518), not yet released. On macOS arm64, a Rigor run against the
+generated 3.3 and 3.4 cores reported the removed `Array#rfind` and the narrowed `String#strip`,
+and reported neither against the default core. Verify positive and negative
+type-checking examples on every exact supported target before claiming support.
 
 Resolve the outstanding items in `rules/core.json`, then review runtime,
 consumer, and coverage evidence for the exact candidate manifest before approving
